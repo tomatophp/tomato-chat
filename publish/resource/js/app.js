@@ -18,8 +18,9 @@ import TomatoTel from "../../packages/tomatophp/tomato-components/resources/js/c
 import TomatoSelect from "../../packages/tomatophp/tomato-components/resources/js/components/TomatoSelect.vue";
 import TomatoArtisan from "../../packages/tomatophp/tomato-components/resources/js/components/TomatoArtisan.vue";
 import TomatoCode from "../../packages/tomatophp/tomato-components/resources/js/components/TomatoCode.vue";
-import Chat from './components/Chat.vue';
-import Video from './components/Video.vue';
+import Chat from '../../packages/tomatophp/tomato-chat/publish/resource/js/components/Chat.vue';
+import Video from '../../packages/tomatophp/tomato-chat/publish/resource/js/components/Call.vue';
+import Call from '../../packages/tomatophp/tomato-chat/publish/resource/js/components/Call.vue';
 
 const Tomato = {
     install(app, options) {
@@ -40,6 +41,7 @@ createApp({
     })
     .component("Chat", Chat)
     .component("Video", Video)
+    .component("Call", Call)
     .component("TomatoRoles", TomatoRoles)
     .component("TomatoRepeater", TomatoRepeater)
     .component("TomatoColor", TomatoColor)

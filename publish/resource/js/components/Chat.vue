@@ -6,6 +6,8 @@
 import Pusher from 'pusher-js';
 import  NProgress from 'nprogress';
 import autosize from 'autosize';
+import { inject } from "vue";
+
 export default {
     data() {
         return {
@@ -224,6 +226,7 @@ export default {
         },
     },
     mounted() {
+        const Splade = inject("$splade");
         /**
          *-------------------------------------------------------------
          * Global variables
@@ -275,31 +278,31 @@ export default {
         const setMessengerId = (id) => $("meta[name=id]").attr("content", id);
         const setMessengerType = (type) => $("meta[name=type]").attr("content", type);
 
-        $('#startVideo').on('click', function(){
-            if (confirm("Start a Video Call?")){
-                let videoURL = $("meta[name=base]").attr("content") + '/profile/video/' + $("meta[name=id]").attr("content") + '/video';
-                $.ajax({
-                    url: videoURL,
-                    method: "GET",
-                    dataType: "JSON",
-                    processData: false,
-                    contentType: false,
-                });
-            }
-        });
-
-        $('#startAudio').on('click', function(){
-            if (confirm("Start a Audio Call?")){
-                let audioURL = $("meta[name=base]").attr("content") + '/profile/video/' + $("meta[name=id]").attr("content") + '/audio';
-                $.ajax({
-                    url: audioURL,
-                    method: "GET",
-                    dataType: "JSON",
-                    processData: false,
-                    contentType: false,
-                });
-            }
-        });
+        // $('#startVideo').on('click', function(){
+        //     if (confirm("Start a Video Call?")){
+        //         let videoURL = $("meta[name=base]").attr("content") + '/video/' + $("meta[name=id]").attr("content") + '/video';
+        //         $.ajax({
+        //             url: videoURL,
+        //             method: "GET",
+        //             dataType: "JSON",
+        //             processData: false,
+        //             contentType: false,
+        //         });
+        //     }
+        // });
+        //
+        // $('#startAudio').on('click', function(){
+        //     if (confirm("Start a Audio Call?")){
+        //         let audioURL = $("meta[name=base]").attr("content") + '/video/' + $("meta[name=id]").attr("content") + '/audio';
+        //         $.ajax({
+        //             url: audioURL,
+        //             method: "GET",
+        //             dataType: "JSON",
+        //             processData: false,
+        //             contentType: false,
+        //         });
+        //     }
+        // });
 
 
         /**
@@ -430,8 +433,8 @@ export default {
                 return (
                     `
 <div class="attachment-preview">
-<span class="fas fa-times cancel"></span>
-<p style="padding:0px 30px;"><span class="fas fa-file"></span> ` +
+<span class="bx bx-time cancel"></span>
+<p style="padding:0px 30px;"><span class="bx bx-file"></span> ` +
                     escapeHtml(fileName) +
                     `</p>
 </div>
@@ -441,11 +444,11 @@ export default {
                 return (
                     `
 <div class="attachment-preview">
-<span class="fas fa-times cancel"></span>
+<span class="bx bx-time cancel"></span>
 <div class="image-file chat-image" style="background-image: url('` +
                     imgURL +
                     `');"></div>
-<p><span class="fas fa-file-image"></span> ` +
+<p><span class="bx bxs-file-image"></span> ` +
                     escapeHtml(fileName) +
                     `</p>
 </div>
@@ -579,6 +582,7 @@ export default {
             if (action == true) {
                 // hide star button
                 $(".add-to-favorite").hide();
+                $(".call-buttons").hide();
                 // hide send card
                 $(".messenger-sendCard").hide();
                 // add loading opacity to messages container
@@ -591,6 +595,7 @@ export default {
                 // show star button
                 if (getMessengerId() != auth_id) {
                     $(".add-to-favorite").show();
+                    $(".call-buttons").show();
                 }
                 // show send card
                 $(".messenger-sendCard").show();
@@ -618,7 +623,17 @@ export default {
                 .remove();
             messagesContainer
                 .find(".message-card[data-id=" + id + "] p")
-                .prepend('<span class="fas fa-exclamation-triangle"></span>');
+                .prepend('<span class="bx bx-error"></span>');
+        }
+
+        function containsAny(str, substrings) {
+            for (var i = 0; i != substrings.length; i++) {
+                var substring = substrings[i];
+                if (str.indexOf(substring) != - 1) {
+                    return substring;
+                }
+            }
+            return null;
         }
 
         /**
@@ -645,13 +660,14 @@ export default {
                     data: { _token: access_token, id, type },
                     dataType: "JSON",
                     success: (data) => {
+                        let avatarImage = data.user_avatar || containsAny(data.user_avatar, ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', 'https://www.gravatar.com/avatar/']) ? data.user_avatar :  $("meta[name=avatar]").attr("content");
                         // avatar photo
                         $(".messenger-infoView")
                             .find(".avatar")
-                            .css("background-image", 'url("' + data.user_avatar + '")');
+                            .css("background-image", 'url("' + avatarImage + '")');
                         $(".header-avatar").css(
                             "background-image",
-                            'url("' + data.user_avatar + '")'
+                            'url("' + avatarImage + '")'
                         );
                         // Show shared and actions
                         $(".messenger-infoView-btns .delete-conversation").show();
@@ -665,8 +681,8 @@ export default {
                         $(".m-header-messaging .user-name").html(data.fetch.name);
                         // Star status
                         data.favorite > 0
-                            ? $(".add-to-favorite").addClass("favorite")
-                            : $(".add-to-favorite").removeClass("favorite");
+                            ? $(".add-to-favorite i").removeClass("bx-star").addClass("bxs-star").addClass('text-orange-500')
+                            : $(".add-to-favorite i").removeClass("bxs-star").removeClass('text-orange-500').addClass("bx-star");
                         // form reset and focus
                         $("#message-form").trigger("reset");
                         cancelAttachment();
@@ -884,46 +900,13 @@ export default {
         initClientChannel();
 
         channel.bind("video-call", function (data) {
-            if (confirm("Video Call Form " + data.from.name)){
-                window.location.replace(data.url);
-                clientSendChannel.trigger("client-video-accept", {
-                    url: $("meta[name=base]").attr("content") + '/profile/video/' + auth_id + '/video/join',
-                });
-
-            } else {
-                clientSendChannel.trigger("client-video-cancel", {
-                    from_id: auth_id, // Me
-                    to_id: data.from.id, // Messenger
-                    status: false,
-                });
-            }
+            Splade.visit(data.url);
         });
 
         channel.bind("audio-call", function (data) {
-            if (confirm("Audio Call Form " + data.from.name)){
-                window.location.replace(data.url);
-                clientSendChannel.trigger("client-audio-accept", {
-                    url: $("meta[name=base]").attr("content") + '/profile/video/' + auth_id + '/audio/join',
-                });
-
-            } else {
-                clientSendChannel.trigger("client-audio-cancel", {
-                    from_id: auth_id, // Me
-                    to_id: data.from.id, // Messenger
-                    status: false,
-                });
-            }
+            Splade.visit(data.url);
         });
 
-        channel.bind("client-video-accept", function (data) {
-            window.location.replace(data.url);
-        });
-
-        channel.bind("client-audio-accept", function (data) {
-            window.location.replace(data.url);
-        });
-
-// Listen to messages, and append if data received
         channel.bind("messaging", function (data) {
             if (data.from_id == getMessengerId() && data.to_id == auth_id) {
                 $(".messages").find(".message-hint").remove();
@@ -957,7 +940,7 @@ export default {
                     if (data.seen == true) {
                         $(".message-time")
                             .find(".fa-check")
-                            .before('<span class="fas fa-check-double seen"></span> ');
+                            .before('<span class="bx bx-check-double seen"></span> ');
                         $(".message-time").find(".fa-check").remove();
                     }
                 }
@@ -1225,8 +1208,8 @@ export default {
                     dataType: "JSON",
                     success: (data) => {
                         data.status > 0
-                            ? $(".add-to-favorite").addClass("favorite")
-                            : $(".add-to-favorite").removeClass("favorite");
+                            ? $(".add-to-favorite i").removeClass("bx-star").addClass("bxs-star").addClass('text-orange-500')
+                            : $(".add-to-favorite i").removeClass("bxs-star").removeClass('text-orange-500').addClass("bx-star");
                     },
                     error: () => {
                         console.error("Server error, check your response");
@@ -1858,13 +1841,13 @@ export default {
             $("body").on("click", ".dark-mode-switch", function () {
                 if ($(this).attr("data-mode") == "0") {
                     $(this).attr("data-mode", "1");
-                    $(this).removeClass("far");
-                    $(this).addClass("fas");
+                    $(this).removeClass("bx bxs-moon");
+                    $(this).addClass("bx bx-moon");
                     dark_mode = "dark";
                 } else {
                     $(this).attr("data-mode", "0");
-                    $(this).removeClass("fas");
-                    $(this).addClass("far");
+                    $(this).removeClass("bx bx-moon");
+                    $(this).addClass("bx bxs-moon");
                     dark_mode = "light";
                 }
             });

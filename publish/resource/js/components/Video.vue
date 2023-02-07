@@ -73,8 +73,8 @@ export default {
                 localPlayerContainer.id = options.uid;
                 // Set the textContent property of the local video container to the local user id.
                 // Set the local video container size.
-                localPlayerContainer.style.width = "640px";
-                localPlayerContainer.style.height = "480px";
+                localPlayerContainer.style.width = "240px";
+                localPlayerContainer.style.height = "180px";
                 localPlayerContainer.style.padding = "15px 5px 5px 5px";
                 // Set the remote video container size.
                 remotePlayerContainer.style.width = "640px";
@@ -88,6 +88,7 @@ export default {
                     await agoraEngine.subscribe(user, mediaType);
                     // Subscribe and play the remote video in the container If the remote user publishes a video track.
                     if (mediaType == "video") {
+                        document.getElementById("avatar").remove();
                         console.log('start video client')
                         // Retrieve the remote video track.
                         channelParameters.remoteVideoTrack = user.videoTrack;
@@ -98,8 +99,6 @@ export default {
                         // Specify the ID of the DIV container. You can use the uid of the remote user.
                         remotePlayerContainer.id = user.uid.toString();
                         channelParameters.remoteUid = user.uid.toString();
-                        remotePlayerContainer.textContent =
-                            "Remote user " + user.uid.toString();
                         // Append the remote container to the page body.
                         document.getElementById('streaming').append(remotePlayerContainer);
                         // Play the remote video track.
@@ -160,6 +159,8 @@ export default {
                 // Play the local video track.
                 console.log("publish success!");
                 document.getElementById("loading").remove();
+
+
                 // Listen to the Leave button click event.
                 document.getElementById("leave").onclick = async function () {
                     // Destroy the local audio and video tracks.
