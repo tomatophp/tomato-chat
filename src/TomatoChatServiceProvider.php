@@ -42,11 +42,11 @@ class TomatoChatServiceProvider extends ServiceProvider
         // Migrations
         $this->publishes([
             __DIR__ . '/../database/migrations/2022_01_10_99999_add_active_status_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_active_status_to_users.php'),
-            __DIR__ . '/database/migrations/2022_01_10_99999_add_avatar_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_avatar_to_users.php'),
-            __DIR__ . '/database/migrations/2022_01_10_99999_add_dark_mode_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_dark_mode_to_users.php'),
-            __DIR__ . '/database/migrations/2022_01_10_99999_add_messenger_color_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_messenger_color_to_users.php'),
-            __DIR__ . '/database/migrations/2022_01_10_99999_create_favorites_table.php' => database_path('migrations/' . date('Y_m_d') . '_999999_create_favorites_table.php'),
-            __DIR__ . '/database/migrations/2022_01_10_99999_create_messages_table.php' => database_path('migrations/' . date('Y_m_d') . '_999999_create_messages_table.php'),
+            __DIR__ . '/../database/migrations/2022_01_10_99999_add_avatar_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_avatar_to_users.php'),
+            __DIR__ . '/../database/migrations/2022_01_10_99999_add_dark_mode_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_dark_mode_to_users.php'),
+            __DIR__ . '/../database/migrations/2022_01_10_99999_add_messenger_color_to_users.php' => database_path('migrations/' . date('Y_m_d') . '_999999_add_messenger_color_to_users.php'),
+            __DIR__ . '/../database/migrations/2022_01_10_99999_create_favorites_table.php' => database_path('migrations/' . date('Y_m_d') . '_999999_create_favorites_table.php'),
+            __DIR__ . '/../database/migrations/2022_01_10_99999_create_messages_table.php' => database_path('migrations/' . date('Y_m_d') . '_999999_create_messages_table.php'),
         ], 'tomato-chat-migrations');
 
         // Models
