@@ -34,6 +34,7 @@
     "require": {
         "php": "^8.0.2",
         "tomatophp/console-helpers": "^1.0",
-        "tomatophp/laravel-agora": "^1.0"
+        "tomatophp/laravel-agora": "^1.0",
+        "pusher/pusher-php-server": "^7.0.0"
     }
 }
