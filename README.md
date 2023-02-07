@@ -9,37 +9,6 @@ Chat Plugin to build full Audio/Video realtime chat app
 ```bash
 composer require tomatophp/tomato-chat
 ```
-after install your package please run this command
-
-```bash
-php artisan tomato-chat:install
-```
-
-## Publish Assets
-
-you can publish config file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-chat-config"
-```
-
-you can publish views file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-chat-views"
-```
-
-you can publish languages file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-chat-lang"
-```
-
-you can publish migrations file by use this command
-
-```bash
-php artisan vendor:publish --tag="tomato-chat-migrations"
-```
 
 ## Support
 
@@ -47,7 +16,7 @@ you can join our discord server to get support [TomatoPHP](https://discord.gg/Xq
 
 ## Docs
 
-you can check docs of this package on [Docs](https://docs.tomatophp.com/plugins/laravel-package-generator)
+you can check docs of this package on [Docs](https://docs.tomatophp.com/plugins/tomato-chat)
 
 ## Changelog
 
