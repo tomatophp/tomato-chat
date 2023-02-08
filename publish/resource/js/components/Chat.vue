@@ -233,8 +233,6 @@ export default {
          *-------------------------------------------------------------
          */
 
-        Pusher.logToConsole = true;
-
         var pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
             cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
             key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -277,32 +275,6 @@ export default {
         const getMessengerType = () => $("meta[name=type]").attr("content");
         const setMessengerId = (id) => $("meta[name=id]").attr("content", id);
         const setMessengerType = (type) => $("meta[name=type]").attr("content", type);
-
-        // $('#startVideo').on('click', function(){
-        //     if (confirm("Start a Video Call?")){
-        //         let videoURL = $("meta[name=base]").attr("content") + '/video/' + $("meta[name=id]").attr("content") + '/video';
-        //         $.ajax({
-        //             url: videoURL,
-        //             method: "GET",
-        //             dataType: "JSON",
-        //             processData: false,
-        //             contentType: false,
-        //         });
-        //     }
-        // });
-        //
-        // $('#startAudio').on('click', function(){
-        //     if (confirm("Start a Audio Call?")){
-        //         let audioURL = $("meta[name=base]").attr("content") + '/video/' + $("meta[name=id]").attr("content") + '/audio';
-        //         $.ajax({
-        //             url: audioURL,
-        //             method: "GET",
-        //             dataType: "JSON",
-        //             processData: false,
-        //             contentType: false,
-        //         });
-        //     }
-        // });
 
 
         /**
@@ -629,7 +601,7 @@ export default {
         function containsAny(str, substrings) {
             for (var i = 0; i != substrings.length; i++) {
                 var substring = substrings[i];
-                if (str.indexOf(substring) != - 1) {
+                if (str && str.indexOf(substring) != - 1) {
                     return substring;
                 }
             }

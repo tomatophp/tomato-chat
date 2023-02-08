@@ -4,14 +4,19 @@
     </x-slot>
     {{-- Messenger Color Style--}}
     <div class="mb-4">
-        <Chat>
+        <Chat #default>
             <div class="messenger h-screen">
                 {{-- ----------------------Users/Groups lists side---------------------- --}}
                 <div class="messenger-listView">
                     {{-- Header and search bar --}}
                     <div class="m-header">
                         <nav>
-                            <a href="#"><i class="bx bxs-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
+                            <a href="#">
+                                <i class="bx bxs-inbox"></i>
+                                <span class="messenger-headTitle">
+                                    MESSAGES
+                                </span>
+                            </a>
                             {{-- header buttons --}}
                             <nav class="m-header-right">
                                 <a href="#"><i class="bx bx-cog settings-btn"></i></a>
@@ -75,10 +80,14 @@
                             {{-- header buttons --}}
                             <nav class="m-header-right flex">
                                 @if(config('tomato-chat.video_chat'))
-                                    <Link  class="call-buttons" href="{{route(config('tomato-chat.routes.name') . 'video.confirm', $id)}}"><i class="bx bxs-video"></i></Link>
+                                    <Link  class="call-buttons" href="{{ route(config('tomato-chat.routes.name') . 'video.confirm', $id) }}">
+                                        <i class="bx bxs-video"></i>
+                                    </Link>
                                 @endif
                                 @if(config('tomato-chat.audio_chat'))
-                                    <Link  class="call-buttons" class="mx-2"  href="{{route(config('tomato-chat.routes.name') . 'audio.confirm', $id)}}"><i class="bx bxs-phone"></i></Link>
+                                    <Link  class="call-buttons mx-2" href="{{route(config('tomato-chat.routes.name') . 'audio.confirm', $id)}}">
+                                        <i class="bx bxs-phone"></i>
+                                    </Link>
                                 @endif
                                 <a href="#" class="add-to-favorite"><i class="bx bx-star"></i></a>
                                 <a class="mx-2" href="/"><i class="bx bx-home"></i></a>
@@ -101,11 +110,11 @@
                         <div class="typing-indicator">
                             <div class="message-card typing">
                                 <p>
-                        <span class="typing-dots">
-                            <span class="dot dot-1"></span>
-                            <span class="dot dot-2"></span>
-                            <span class="dot dot-3"></span>
-                        </span>
+                                    <span class="typing-dots">
+                                        <span class="dot dot-1"></span>
+                                        <span class="dot dot-2"></span>
+                                        <span class="dot dot-3"></span>
+                                    </span>
                                 </p>
                             </div>
                         </div>

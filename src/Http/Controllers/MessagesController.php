@@ -371,7 +371,11 @@ class MessagesController extends Controller
     public function seen(Request $request)
     {
         // make as seen
-        $seen = TomatoChatMessenger::makeSeen($request['id']);
+        $seen = false;
+        if($request['id'] !== 'idInfo'){
+            $seen = TomatoChatMessenger::makeSeen($request['id']);
+        }
+
         // send the response
         return Response::json([
             'status' => $seen,

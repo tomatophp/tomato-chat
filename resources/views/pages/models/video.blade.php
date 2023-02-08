@@ -1,5 +1,5 @@
 <div class="bg-gray-900 p-4 h-screen w-screen flex flex-col justify-center my-auto">
-    <Call :auth_id="{{auth(config('tomato-chat.guard'))->user()->id}}" :caller_id="{{$user->id}}">
+    <Call :auth_id="{{auth(config('tomato-chat.guard'))->user()->id}}" :caller_id="{{$user->id}}" #default>
         <div>
             @php
                 $favUser = \TomatoPHP\TomatoChat\Facades\TomatoChatMessenger::getUserWithAvatar($user);
