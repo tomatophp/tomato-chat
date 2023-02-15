@@ -98,6 +98,8 @@ class VideoController extends Controller
      */
     public function index($id, $type): RedirectResponse
     {
+        $seo = new SEO();
+        $seo::metaByName('pusher-auth', route(config('tomato-chat.routes.name')."pusher.auth"));
 
 
         if($type === 'audio'){
@@ -122,6 +124,10 @@ class VideoController extends Controller
      */
     public function active($id, $type): Application|Factory|View
     {
+        $seo = new SEO();
+        $seo::metaByName('pusher-auth', route(config('tomato-chat.routes.name')."pusher.auth"));
+
+
         $uid = rand(999, 1999);
         if($type === 'video'){
             $token = Agora::make($id)->channel('private-chatify')->uId($uid)->token();
@@ -151,6 +157,10 @@ class VideoController extends Controller
      */
     public function join($id, $type): Application|Factory|View
     {
+        $seo = new SEO();
+        $seo::metaByName('pusher-auth', route(config('tomato-chat.routes.name')."pusher.auth"));
+
+
         $uid = rand(999, 1999);
         if($type === 'video'){
             $token = Agora::make($id)->channel('private-chatify')->uId($uid)->token();

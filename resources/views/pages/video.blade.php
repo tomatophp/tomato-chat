@@ -1,5 +1,5 @@
 <div class="bg-gray-900 p-4 h-screen w-screen flex flex-col justify-center my-auto">
-    <Video #default>
+    <Video url="{{route(config('tomato-chat.routes.name').'index')}}" :auth_id="{{auth(config('tomato-chat.guard'))->user()->id}}" :call_id="{{$user->id}}" #default>
         <div class="flex flex-col justify-center w-full">
             <input type="hidden" name="appID" id="appID" value="{{ $appID }}" />
             <input type="hidden" name="channelName" id="channelName" value="{{ $channelName }}" />
@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex justify-center my-4">
                     <div class="flex flex-col justify-center text-center text-white">
-                        <a href="{{route(config('tomato-chat.routes.name').'index')}}" id="leave" class="h-12 w-12 bg-red-500 text-center text-white rounded-full mx-auto my-2 p-2">
+                        <a href="{{route(config('tomato-chat.routes.name').'index')}}"  id="leave" class="h-12 w-12 bg-red-500 text-center text-white rounded-full mx-auto my-2 p-2">
                             <i class="bx bx-sm bx-x mt-1"></i>
                         </a>
                         <h1>Cancel</h1>

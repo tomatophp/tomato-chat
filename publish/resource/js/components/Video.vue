@@ -3,9 +3,64 @@
 </template>
 <script>
 import AgoraRTC from "agora-rtc-sdk-ng";
+import Pusher from "pusher-js";
+
 export default {
     name: 'Video',
+    props: {
+        auth_id: {
+            String,
+            required: true
+        },
+        call_id: {
+            String,
+            required: true
+        },
+        url: {
+            String,
+            required: true
+        }
+    },
     mounted() {
+        Pusher.logToConsole = true;
+
+        let _this = this;
+
+        const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+            key: import.meta.env.VITE_PUSHER_APP_KEY,
+            wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
+            wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
+            wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
+            forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+            enabledTransports: ['ws', 'wss'],
+            authEndpoint: $('meta[name="pusher-auth"]').attr('content'),
+            auth: {
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }
+        });
+
+        const channelName = "private-chatify";
+        const channel = pusher.subscribe(`${channelName}.${this.auth_id}`);
+        const clientSendChannel = pusher.subscribe(`${channelName}.${this.call_id}`);
+
+        clientSendChannel.bind("client-video-cancel", function (data) {
+            window.location.replace(data.url);
+        });
+
+        clientSendChannel.bind("client-audio-cancel", function (data) {
+            window.location.replace(data.url);
+        });
+
+        channel.bind("client-video-cancel", function (data) {
+            window.location.replace(data.url);
+        });
+
+        channel.bind("client-audio-cancel", function (data) {
+            window.location.replace(data.url);
+        });
         //
         let options = {
             // Pass your App ID here.
@@ -32,6 +87,7 @@ export default {
             // A variable to hold the remote user id.s
             remoteUid: null,
         };
+
 
         async function startBasicCall() {
             // Create an instance of the Agora Engine
@@ -80,7 +136,10 @@ export default {
                 await agoraEngine.subscribe(user, mediaType);
                 // Subscribe and play the remote video in the container If the remote user publishes a video track.
                 if (mediaType == "video") {
-                    document.getElementById("avatar").remove();
+                    if(document.getElementById("avatar")){
+                        document.getElementById("avatar").remove();
+                    }
+
                     // Retrieve the remote video track.
                     channelParameters.remoteVideoTrack = user.videoTrack;
                     // Retrieve the remote audio track.
@@ -151,7 +210,20 @@ export default {
 
             // Listen to the Leave button click event.
             document.getElementById("leave").onclick = async function () {
-                // Destroy the local audio and video tracks.
+                clientSendChannel.trigger("client-video-cancel", {
+                    from_id: _this.auth_id, // Me
+                    to_id: _this.call_id, // Messenger
+                    url: _this.url,
+                    status: false,
+                });
+
+                clientSendChannel.trigger("client-audio-cancel", {
+                    from_id: _this.auth_id, // Me
+                    to_id: _this.call_id, // Messenger
+                    url: _this.url,
+                    status: false,
+                });
+                //Destroy the local audio and video tracks.
                 if(options.streamType === 'video'){
                     channelParameters.localVideoTrack.close();
                     channelParameters.localAudioTrack.close();

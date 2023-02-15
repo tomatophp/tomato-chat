@@ -1,5 +1,5 @@
 <div class="bg-gray-900 p-4 h-screen w-screen flex flex-col justify-center my-auto">
-    <Video #default>
+    <Video url="{{route(config('tomato-chat.routes.name').'index')}}" :auth_id="{{auth(config('tomato-chat.guard'))->user()->id}}" :call_id="{{$user->id}}" #default>
         <div class="flex flex-col justify-center w-full">
             <input type="hidden" name="appID" id="appID" value="{{ $appID }}" />
             <input type="hidden" name="channelName" id="channelName" value="{{ $channelName }}" />
