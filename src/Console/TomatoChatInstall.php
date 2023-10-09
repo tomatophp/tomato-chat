@@ -41,17 +41,8 @@ class TomatoChatInstall extends Command
     {
         $this->info('Publish Vendor Assets');
         $this->callSilent('optimize:clear');
-        $this->handelFile('/resource/css/app.css', resource_path('/css/app.css'));
-        $this->handelFile('/resource/css/app.css', resource_path('/css/app.css'));
-        $this->handelFile('/resource/js/app.js', resource_path('/js/app.js'));
-        $this->handelFile('/resource/js/components', resource_path('/js'), 'folder');
-        $this->handelFile('/resource/css/light.mode.css', resource_path('/css/light.mode.css'));
-        $this->handelFile('/resource/css/style.css', resource_path('/css/style.css'));
-        $this->yarnCommand(['add', 'agora-rtc-sdk-ng', 'pusher-js', 'autosize', 'nprogress', 'jquery']);
-        $this->yarnCommand(['install']);
-        $this->yarnCommand(['build']);
         $this->artisanCommand(["migrate"]);
         $this->artisanCommand(["optimize:clear"]);
-        $this->info('🍅 Tomato Chat installed successfully.');
+        $this->info('Tomato Chat installed successfully.');
     }
 }

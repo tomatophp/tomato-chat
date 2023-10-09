@@ -4,9 +4,10 @@ namespace TomatoPHP\TomatoChat;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use TomatoPHP\TomatoAdmin\Facade\TomatoMenu;
+use TomatoPHP\TomatoAdmin\Services\Contracts\Menu;
 use TomatoPHP\TomatoChat\Console\TomatoChatInstall;
 use TomatoPHP\TomatoChat\Menus\ChatMenu;
-use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
 
 
 class TomatoChatServiceProvider extends ServiceProvider
@@ -90,7 +91,12 @@ class TomatoChatServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
-
-        TomatoMenuRegister::registerMenu(ChatMenu::class);
+        TomatoMenu::register(
+            Menu::make()
+                ->label("Chat")
+                ->group(__('Tools'))
+                ->icon("bx bxs-chat")
+                ->route(config('tomato-chat.routes.name')),
+        );
     }
 }
